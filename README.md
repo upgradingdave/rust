@@ -1,5 +1,10 @@
 # Rust
 
+## TODO
+
+- [ ] How to use `rustfmt`?
+- [ ] How to use `cargo`?
+
 # Installation
 
 Install using `rustup`: 
