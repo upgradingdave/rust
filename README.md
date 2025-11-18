@@ -2,7 +2,7 @@
 
 ## TODO
 
-- [ ] How to use `rustfmt`?
+- [x] How to use `rustfmt`?
 - [ ] How to use `cargo`?
 
 # Installation
