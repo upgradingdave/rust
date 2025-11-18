@@ -41,6 +41,5 @@ rustup update
 # Coding in Rust
 
 - [Crates.io](https://crates.io) is the repository of Rust packages
-
-
-
+- Run `crate update --verbose` to see latest dependencies
+- Run `cargo doc --open` to open the Rust documentation in your browser.
