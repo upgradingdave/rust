@@ -37,3 +37,10 @@ rustup update
 
 - Run `rustup doc --book` to open the Rust book in your browser.
 - Run `rustup doc` to open the Rust documentation in your browser.
+
+# Coding in Rust
+
+- [Crates.io](https://crates.io) is the repository of Rust packages
+
+
+
