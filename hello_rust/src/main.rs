@@ -5,7 +5,7 @@ use rand::Rng;
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     
-    let mut command_run = true;
+    let mut command_run = false;
 
     if args.len() > 1 {
         if args[1] == "guess" {
@@ -14,8 +14,13 @@ fn main() {
             let fahrenheit = args[2].parse::<f64>().expect("Invalid input");
             fahrenheit_to_celsius(fahrenheit);
         } else if args[1] == "fib" {
-            let n = args[2].parse::<u32>().expect("Invalid input");
-            println!("Fibonacci({}) = {}", n, fibonacci(n));
+            if args.len() < 3 {
+                println!("Invalid input");
+                command_run = false;
+            } else {
+                let n = args[2].parse::<u32>().expect("Invalid input");
+                println!("Fibonacci({}) = {}", n, fibonacci(n));
+            }
         } else if args[1] == "args" {
             for (i, arg) in args.iter().enumerate() {
                 println!("Argument {}: {}", i, arg);
