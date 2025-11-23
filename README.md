@@ -4,6 +4,7 @@
 
 - https://doc.rust-lang.org/rust-by-example/
 - https://rustlings.rust-lang.org/
+- https://rust-lang.github.io/api-guidelines/
 
 # Installation
 
