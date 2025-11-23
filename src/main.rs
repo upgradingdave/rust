@@ -4,6 +4,8 @@ use rand::Rng;
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+    
+    let mut command_run = true;
 
     if args.len() > 1 {
         if args[1] == "guess" {
@@ -18,11 +20,85 @@ fn main() {
             for (i, arg) in args.iter().enumerate() {
                 println!("Argument {}: {}", i, arg);
             }
-        } else {
-            help();
+        } else if args[1] == "owner" {
+            ownership();
+        } else if args[1] == "rectangle" {
+            if args.len() < 4 {
+                println!("Invalid input");
+                command_run = false;
+            } else {
+                let width = args[2].parse::<u32>().expect("Invalid input");
+                let height = args[3].parse::<u32>().expect("Invalid input");
+                let rect = Rectangle { width, height };
+                println!("Calculating area of rectangle, {:?}", rect);
+                println!("Area of rectangle: {}", rect.area());
+                let rect2 = Rectangle { width: 5, height: 5 };
+                println!("Can hold another rectangle {:?}? {}", rect2, rect.can_hold(&rect2));
+                let rect3 = Rectangle { width: 10, height: 10 };
+                println!("Can hold another rectangle {:?}? {}", rect3, rect.can_hold(&rect3));
+                println!("Square version of your rectangle: {:?}", Rectangle::square(rect.width));
+            }
+        } else if args[1] == "person" {
+            if args.len() < 6 {
+                println!("Invalid input");
+                command_run = false;
+            } else {
+                let name = args[2].to_string();
+                let age = args[3].parse::<u32>().expect("Invalid input");
+                let height = args[4].parse::<u32>().expect("Invalid input");
+                let weight = args[5].parse::<u32>().expect("Invalid input");
+                let person = Person { age, name, height, weight };
+                println!("Person: {:?}", person);
+                let person2 = Person { age: 15, name: "Zack".to_string(), height: 170, weight: 150 };
+                println!("Person2: {:?}", person2);
+                println!("Person is older than Person2: {}", person.older(&person2));
+            }
         }
-    } else {
-        help();
+    }
+    
+    if !command_run {
+        help();            
+    }
+}
+
+fn ownership() {
+    let mut s = String::from("hello");
+    s.push_str(", world!"); 
+    println!("{s}"); 
+}
+
+#[derive(Debug)]
+struct Person {
+    name: String, 
+    age: u32,
+    height: u32,
+    weight: u32,
+}
+
+impl Person {
+    fn older(&self, other: &Person) -> bool {
+        self.age - other.age > 0
+    }
+}
+
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        dbg!(self);
+        self.width * self.height
+    }
+    
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+    
+    fn square(size: u32) -> Rectangle {
+        Rectangle { width: size, height: size }
     }
 }
 
@@ -36,6 +112,8 @@ fn help() {
     println!("  convert - Convert Fahrenheit to Celsius");
     println!("  fib - Calculate Fibonacci number");
     println!("  args - Print command-line arguments");
+    println!("  owner - Run the ownership sample function");
+    println!("  rectangle [width] [height] - Calculate area of a rectangle");
 }
 
 fn fibonacci(n: u32) -> u32 {

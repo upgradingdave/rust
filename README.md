@@ -1,9 +1,9 @@
 # Rust
 
-## TODO
+## Resources
 
-- [x] How to use `rustfmt`?
-- [ ] How to use `cargo`?
+- https://doc.rust-lang.org/rust-by-example/
+- https://rustlings.rust-lang.org/
 
 # Installation
 
@@ -44,4 +44,15 @@ rustup update
 - Run `crate update --verbose` to see latest dependencies
 - Run `cargo doc --open` to open the Rust documentation in your browser.
 - To pass args to cargo use `cargo run -- <args>`
+
+# Concepts
+
+## Ownership, aka, Resource Acquisition Is Initialization (RAII)
+
+- Each value has an Owner
+- there can only be one owner at a time
+- when the owner goes out of scope, the value will be dropped
+
+Instead of shallow copying, values are moved. References allow use of a value without taking ownership. 
+
 
