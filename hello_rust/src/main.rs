@@ -5,7 +5,7 @@ use rand::Rng;
 fn main() {
     let args: Vec<String> = std::env::args().collect();
     
-    let mut command_run = false;
+    let mut command_run = true;
 
     if args.len() > 1 {
         if args[1] == "guess" {
@@ -58,6 +58,8 @@ fn main() {
                 println!("Person2: {:?}", person2);
                 println!("Person is older than Person2: {}", person.older(&person2));
             }
+        } else if args[1] == "maps" {
+            fun_with_maps();
         }
     }
     
@@ -119,6 +121,8 @@ fn help() {
     println!("  args - Print command-line arguments");
     println!("  owner - Run the ownership sample function");
     println!("  rectangle [width] [height] - Calculate area of a rectangle");
+    println!("  maps - Work with HashMaps");
+    println!("");
 }
 
 fn fibonacci(n: u32) -> u32 {
@@ -168,4 +172,24 @@ fn guess_secret_number() {
             }
         }
     }
+}
+
+use std::collections::HashMap;
+
+fn fun_with_maps() {
+    let mut scores = HashMap::new();
+        
+    scores.insert(String::from("Blue"), 10);
+    scores.insert(String::from("Yellow"), 50);
+        
+    let team_name = String::from("Blue");
+    let score1 = scores.get(&team_name).copied().unwrap_or(0);
+    
+    println!("The score for team {} is {}", team_name, score1);
+    
+    let score2 = scores.get(&String::from("Yellow")).unwrap_or(&0);
+    
+    println!("The score for team Yellow is {}", score2);
+    
+    println!("score1: {} plus score2: {} equals {}", score1, score2, score1 + score2);
 }
