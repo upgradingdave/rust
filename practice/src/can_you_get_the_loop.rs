@@ -5,49 +5,42 @@ pub struct Node {
 
 impl Node {
     pub fn new(elem: usize) -> Self {
-        Node { elem: elem, next: None}
+        Node { elem: elem, next: None }
     }
     
     pub fn gen_cycle(tail_size: usize, loop_size: usize) -> Node {
         let mut idx = 0;
-        let mut head = Node::new(idx);
+        let mut head1 = Node::new(idx);
         idx = idx + 1;
-
-        let mut tail = &mut head;
+        let mut tail1 = &mut head1;
         
         for i in idx..tail_size {
             let node = Node::new(i);
-            tail.next = Some(Box::new(node));
-            tail = tail.next.as_mut().unwrap();
+            tail1.next = Some(Box::new(node));
+            tail1 = tail1.next.as_mut().unwrap();
         }
         
-        idx = tail_size;
-
         if loop_size > 0 {
-            
-            //let loop_start = tail as *mut Node;
-            let loop_start = Node::new(idx);
-            tail.next = Some(Box::new(loop_start));
-            tail = tail.next.as_mut().unwrap();
-            
+            idx = tail_size;
+            let mut head2 = Node::new(idx);
             idx = idx + 1;
+            let mut tail2 = &mut head2;
             
             for i in idx..loop_size+tail_size {
                 let node = Node::new(i);
-                tail.next = Some(Box::new(node));
-                tail = tail.next.as_mut().unwrap();
+                tail2.next = Some(Box::new(node));
+                tail2 = tail2.next.as_mut().unwrap();
             }
             
-            /*unsafe {
-                tail.next = Some(Box::from_raw(loop_start as *mut Node));
-            }*/
+            tail1.next = Some(Box::new(head2));
+
         }
-        head
+        head1
     }
     
     pub fn print_list(&self) {
         let mut current = Some(self);
-        for _ in 0..20 {
+        loop {
             match current {
                 Some(node) => {
                     print!("{} ", node.elem);
