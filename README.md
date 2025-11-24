@@ -1,7 +1,5 @@
 # Rust
 
-## Resources
-
 - https://doc.rust-lang.org/rust-by-example/
 - https://rustlings.rust-lang.org/
 - https://rust-lang.github.io/api-guidelines/
@@ -57,3 +55,6 @@ rustup update
 Instead of shallow copying, values are moved. References allow use of a value without taking ownership. 
 
 
+## Algorithms
+
+Use Floyd's Cycle-Finding Algorithm (Hare-Tortoise Algorithm) to find a cycle in a linked list.
