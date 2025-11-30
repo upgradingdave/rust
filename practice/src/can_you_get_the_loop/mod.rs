@@ -1,97 +1,32 @@
-pub struct Node {
-    pub elem: usize,
-    pub next: Option<Box<Node>>,
+use std::cell::RefCell;
+
+thread_local! {
+    /// Per-thread linked-list simulation; `ARENA[n]` holds the index for the
+    /// next node that node `n` links to. Typically `ARENA[n] = n + 1` but the
+    /// last entry should be a value in the range `0..=n - 1`.
+    static ARENA: RefCell<Vec<usize>> = const { RefCell::new(Vec::new()) };
 }
+
+#[derive(Clone, Copy, Eq, PartialEq)]
+pub struct Node(usize);
 
 impl Node {
-    fn new(elem: usize) -> Self {
-        Node { elem: elem, next: None }
+    /// Generate a linked list containing `tail_size + loop_size` nodes, with a loop
+    /// `loop_size` long.
+    pub fn gen_cycle(tail_size: usize, loop_size: usize) -> Node {
+        debug_assert!(loop_size > 0);
+        // NOTE: This _replaces_ the previous arena contents. This is fine here
+        // because we only need one linked-list of nodes to exist per test, and
+        // tests run in their own threads.
+        ARENA.with(move |arena| {
+            let mut vec: Vec<usize> = (1..=tail_size + loop_size).collect();
+            *vec.last_mut().unwrap() = tail_size;
+            *arena.borrow_mut() = vec;
+        });
+        Node(0)
     }
-    
 
-    fn create_list(size: usize, start_idx: usize) -> Node {
-        let mut idx = start_idx;
-        let mut head = Self::new(idx);
-        idx = idx + 1;
-        let mut tail = &mut head;
-        
-        for i in idx..size+start_idx {
-            let node = Self::new(i);
-            tail.next = Some(Box::new(node));
-            tail = tail.next.as_mut().unwrap();
-        }
-        
-        head
-    }
-    
-    pub fn gen_cycle(tail_size: usize, loop_size: usize) -> Self {
-        
-        let list1 = Self::create_list(tail_size, 0);
-        
-        if loop_size > 0 {
-            let _list2 = Self::create_list(loop_size, tail_size);
-            //list1.next = Some(Box::new(list2));
-        }
-        list1
-    }
-    
-    pub fn print_list(&self) {
-        let mut current = Some(self);
-        loop {
-            match current {
-                Some(node) => {
-                    print!("{} ", node.elem);
-                    current = node.next.as_deref();
-                }
-                None => break,
-            }
-        }
-        println!();
+    pub fn next(&self) -> Node {
+        Node(ARENA.with(|a| a.borrow()[self.0]))
     }
 }
-
-impl PartialEq for Node {
-    fn eq(&self, other: &Self) -> bool {
-        self.elem == other.elem
-    }
-}
-
-impl Eq for Node {}
-
-/*fn loop_size(node: Node) -> usize {
-    todo!("Your code here!")
-}*/
-
-// Add your tests here.
-// See https://doc.rust-lang.org/stable/rust-by-example/testing/unit_testing.html
-/*
-#[cfg(test)]
-mod sample_tests {
-
-    fn assert_loop_size(tail_size: usize, loop_size: usize) {
-        assert_eq!(
-            super::loop_size(Node::gen_cycle(tail_size, loop_size)),
-            loop_size
-        );
-    }
-
-    #[test]
-    fn four_nodes_with_a_loop_of_3() {
-        assert_loop_size(1, 3);
-    }
-
-    #[test]
-    fn no_tail_and_a_loop_of_4() {
-        assert_loop_size(0, 4);
-    }
-
-    #[test]
-    fn tiny_loop() {
-        assert_loop_size(3, 1);
-    }
-
-    #[test]
-    fn single_node() {
-        assert_loop_size(0, 1);
-    }
-}*/
