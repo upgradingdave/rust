@@ -1,8 +1,13 @@
-pub mod can_you_get_the_loop;
-
-use can_you_get_the_loop::Node;
+use practice::swap_node_pairs::Node;
 
 fn main() {
-    let list = Node::gen_cycle(3, 3);
-    list.print_list();
+    let mut list = Node{
+        next: Some(Box::new(Node{
+            next: Some(Box::new(Node{
+                next: None,
+            }))
+        }))
+    };
+    
+    println!("{}", Node::display_option(&list.next));
 }
