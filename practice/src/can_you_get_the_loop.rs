@@ -4,38 +4,35 @@ pub struct Node {
 }
 
 impl Node {
-    pub fn new(elem: usize) -> Self {
+    fn new(elem: usize) -> Self {
         Node { elem: elem, next: None }
     }
     
-    pub fn gen_cycle(tail_size: usize, loop_size: usize) -> Node {
-        let mut idx = 0;
-        let mut head1 = Node::new(idx);
+
+    fn create_list(size: usize, start_idx: usize) -> Node {
+        let mut idx = start_idx;
+        let mut head = Self::new(idx);
         idx = idx + 1;
-        let mut tail1 = &mut head1;
+        let mut tail = &mut head;
         
-        for i in idx..tail_size {
-            let node = Node::new(i);
-            tail1.next = Some(Box::new(node));
-            tail1 = tail1.next.as_mut().unwrap();
+        for i in idx..size+start_idx {
+            let node = Self::new(i);
+            tail.next = Some(Box::new(node));
+            tail = tail.next.as_mut().unwrap();
         }
+        
+        head
+    }
+    
+    pub fn gen_cycle(tail_size: usize, loop_size: usize) -> Self {
+        
+        let list1 = Self::create_list(tail_size, 0);
         
         if loop_size > 0 {
-            idx = tail_size;
-            let mut head2 = Node::new(idx);
-            idx = idx + 1;
-            let mut tail2 = &mut head2;
-            
-            for i in idx..loop_size+tail_size {
-                let node = Node::new(i);
-                tail2.next = Some(Box::new(node));
-                tail2 = tail2.next.as_mut().unwrap();
-            }
-            
-            tail1.next = Some(Box::new(head2));
-
+            let _list2 = Self::create_list(loop_size, tail_size);
+            //list1.next = Some(Box::new(list2));
         }
-        head1
+        list1
     }
     
     pub fn print_list(&self) {
@@ -60,8 +57,6 @@ impl PartialEq for Node {
 }
 
 impl Eq for Node {}
-
-
 
 /*fn loop_size(node: Node) -> usize {
     todo!("Your code here!")
