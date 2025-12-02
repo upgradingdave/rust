@@ -8,7 +8,7 @@ pub fn has_repetition(i_str: &str, num_chunks: &usize) -> bool {
         let first_chunk = &i_str[0..chunk_size];
         for k in 1..str_len / chunk_size {
             let next_chunk = &i_str[k*chunk_size..(k*chunk_size)+chunk_size];
-            println!("Comparing {} and {}", first_chunk, next_chunk);
+            //println!("Comparing {} and {}", first_chunk, next_chunk);
             if first_chunk != next_chunk {
                 return false;
             }
@@ -62,7 +62,7 @@ pub fn part2(path: &str) -> Result<u64, std::io::Error> {
 
             let mut match_found = false;
             
-            for j in 2..str_len {
+            for j in 2..=str_len {
                 if has_repetition(&i_str, &j) {
                     match_found = true;
                     break;
@@ -70,6 +70,7 @@ pub fn part2(path: &str) -> Result<u64, std::io::Error> {
             }
 
             if match_found {
+                println!("Found match for {}", i);
                 answer += i;
             }
         }

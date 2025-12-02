@@ -14,10 +14,10 @@ fn main() {
     //let answer = part1("input/2025_02b.txt");
     //println!("Answer: {:?}", answer.unwrap());
     
-    let answer = aoc_2025_02::part2("input/2025_02a.txt");
+    let answer = aoc_2025_02::part2("input/2025_02b.txt");
     println!("Answer: {:?}", answer.unwrap());
 
-    //let i:u64 = 123123123;
+    //let i:u64 = 11;
     //let answer = aoc_2025_02::has_repetition(&i.to_string(), &2);
     //println!("Answer: {:?}", answer);
 }
