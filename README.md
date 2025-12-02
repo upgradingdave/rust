@@ -1,3 +1,5 @@
+This is a repo I'm using to learn Rust
+
 # Rust
 
 - https://doc.rust-lang.org/rust-by-example/
