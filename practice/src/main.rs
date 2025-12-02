@@ -1,5 +1,5 @@
 //use practice::aoc_2025_01::read_rotations_from_file;
-use practice::aoc_2025_02::read_file;
+use practice::aoc_2025_02;
 
 fn main() {
     
@@ -11,6 +11,13 @@ fn main() {
     println!("Answer: {:?}", answer.unwrap());*/
     
     // Day 02
-    let answer = read_file("input/2025_02b.txt");
+    //let answer = part1("input/2025_02b.txt");
+    //println!("Answer: {:?}", answer.unwrap());
+    
+    let answer = aoc_2025_02::part2("input/2025_02a.txt");
     println!("Answer: {:?}", answer.unwrap());
+
+    //let i:u64 = 123123123;
+    //let answer = aoc_2025_02::has_repetition(&i.to_string(), &2);
+    //println!("Answer: {:?}", answer);
 }
