@@ -11,6 +11,6 @@ fn main() {
     println!("Answer: {:?}", answer.unwrap());*/
     
     // Day 02
-    let answer = read_file("input/2025_02a.txt");
+    let answer = read_file("input/2025_02b.txt");
     println!("Answer: {:?}", answer.unwrap());
 }

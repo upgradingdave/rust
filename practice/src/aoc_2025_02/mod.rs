@@ -6,6 +6,7 @@ pub fn read_file(path: &str) -> Result<u64, std::io::Error> {
     let mut answer = 0;
 
     for range in input.split(',') {
+        println!("processing range {}", range);
         let parts: Vec<&str> = range.split('-').collect();
         let start = parts[0].parse::<u64>().unwrap();
         let end = parts[1].parse::<u64>().unwrap();
