@@ -1,4 +1,4 @@
-use practice::aoc_2025_01::read_rotations_from_file;
+//use practice::aoc_2025_01::read_rotations_from_file;
 use practice::aoc_2025_02::read_file;
 
 fn main() {
