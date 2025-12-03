@@ -51,7 +51,7 @@ pub fn part2(path: &str) -> Result<u64, std::io::Error> {
     let mut answer = 0;
 
     for range in input.split(',') {
-        println!("processing range {}", range);
+        //println!("processing range {}", range);
         let parts: Vec<&str> = range.split('-').collect();
         let start = parts[0].parse::<u64>().unwrap();
         let end = parts[1].parse::<u64>().unwrap();
@@ -70,7 +70,7 @@ pub fn part2(path: &str) -> Result<u64, std::io::Error> {
             }
 
             if match_found {
-                println!("Found match for {}", i);
+                //println!("Found match for {}", i);
                 answer += i;
             }
         }

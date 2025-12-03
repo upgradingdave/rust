@@ -2,6 +2,7 @@
 use practice::aoc_2025_02;
 
 fn main() {
+
     
     // Day 01
     /*let answer = read_rotations_from_file("input/2025_01a.txt");
@@ -13,8 +14,10 @@ fn main() {
     // Day 02
     //let answer = part1("input/2025_02b.txt");
     //println!("Answer: {:?}", answer.unwrap());
-    
+
+    let start_time = std::time::Instant::now();    
     let answer = aoc_2025_02::part2("input/2025_02b.txt");
+    println!("Time: {:?}", std::time::Instant::now() - start_time);
     println!("Answer: {:?}", answer.unwrap());
 
     //let i:u64 = 11;
