@@ -1,5 +1,5 @@
 //use practice::aoc_2025_01::read_rotations_from_file;
-use practice::aoc_2025_02;
+//use practice::aoc_2025_02;
 use practice::aoc_2025_03;
 
 fn main() {
@@ -21,6 +21,6 @@ fn main() {
     // println!("Answer: {:?}", answer.unwrap());
 
     // Day 03
-    let answer = aoc_2025_03::part1("input/2025_03a.txt");
+    let answer = aoc_2025_03::part1("input/2025_03b.txt");
     println!("Answer: {:?}", answer.unwrap());
 }
