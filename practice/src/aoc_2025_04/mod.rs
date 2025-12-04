@@ -15,39 +15,55 @@ fn parse_grid(filename: &str) -> Result<Vec<Vec<bool>>, std::io::Error> {
     Ok(grid)
 }
 
-pub fn part1(file: &str) -> Result<u64, std::io::Error> {
-    let grid = parse_grid(file)?;
+pub fn part1(file: &str) -> Result<usize, std::io::Error> {
+    let mut grid = parse_grid(file)?;
     
-    let mut accessible = 0;
+    let mut removed = 0;
+    let mut tries = 0;
+    
+    let mut accessible: Vec<(usize, usize)> = Vec::new();
+    
+    while tries == 0 || (tries <20 && accessible.len() > 0) {
+        
+        accessible.clear();
 
-    for i in 0..grid.len() {
-        for j in 0..grid[i].len() {
-            //println!("Grid[{}][{}] is '@': {}", i, j, grid[i][j]);
-            if grid[i][j] {
-              let left_neighbor = i > 0 && grid[i - 1][j];
-              let right_neighbor = i < grid.len() - 1 && grid[i + 1][j];
-              let top_neighbor = j > 0 && grid[i][j - 1];
-              let bottom_neighbor = j < grid[i].len() - 1 && grid[i][j + 1];
-              let left_top_neighbor = i > 0 && j > 0 && grid[i - 1][j - 1];
-              let right_top_neighbor = i > 0 && j < grid[i].len() - 1 && grid[i - 1][j + 1];
-              let left_bottom_neighbor = i < grid.len() - 1 && j > 0 && grid[i + 1][j - 1];
-              let right_bottom_neighbor = i < grid.len() - 1 && j < grid[i].len() - 1 && grid[i + 1][j + 1];
-              
-              let mut count = 0;
-              if left_neighbor { count += 1; }
-              if right_neighbor { count += 1; }
-              if top_neighbor { count += 1; }
-              if bottom_neighbor { count += 1; }
-              if left_top_neighbor { count += 1; }
-              if right_top_neighbor { count += 1; }
-              if left_bottom_neighbor { count += 1; }
-              if right_bottom_neighbor { count += 1; }
-              
-              if count < 4 {
-                  accessible = accessible + 1;
-              }
+        for i in 0..grid.len() {
+            for j in 0..grid[i].len() {
+                //println!("Grid[{}][{}] is '@': {}", i, j, grid[i][j]);
+                if grid[i][j] {
+                    let left_neighbor = i > 0 && grid[i - 1][j];
+                    let right_neighbor = i < grid.len() - 1 && grid[i + 1][j];
+                    let top_neighbor = j > 0 && grid[i][j - 1];
+                    let bottom_neighbor = j < grid[i].len() - 1 && grid[i][j + 1];
+                    let left_top_neighbor = i > 0 && j > 0 && grid[i - 1][j - 1];
+                    let right_top_neighbor = i > 0 && j < grid[i].len() - 1 && grid[i - 1][j + 1];
+                    let left_bottom_neighbor = i < grid.len() - 1 && j > 0 && grid[i + 1][j - 1];
+                    let right_bottom_neighbor = i < grid.len() - 1 && j < grid[i].len() - 1 && grid[i + 1][j + 1];
+                    
+                    let mut count = 0;
+                    if left_neighbor { count += 1; }
+                    if right_neighbor { count += 1; }
+                    if top_neighbor { count += 1; }
+                    if bottom_neighbor { count += 1; }
+                    if left_top_neighbor { count += 1; }
+                    if right_top_neighbor { count += 1; }
+                    if left_bottom_neighbor { count += 1; }
+                    if right_bottom_neighbor { count += 1; }
+                    
+                    if count < 4 {
+                        accessible.push((i, j));
+                    }
+                }
             }
         }
+        println!("Accessible cells: {}", accessible.len());
+        
+        for (i, j) in &accessible {
+            grid[*i][*j] = false;
+        }
+        
+        removed = removed + accessible.len();
+        tries = tries + 1;
     }    
-    Ok(accessible)
+    Ok(removed)
 }
