@@ -15,7 +15,7 @@ fn parse_grid(filename: &str) -> Result<Vec<Vec<bool>>, std::io::Error> {
     Ok(grid)
 }
 
-pub fn part1(file: &str) -> Result<usize, std::io::Error> {
+pub fn solution(file: &str) -> Result<usize, std::io::Error> {
     let mut grid = parse_grid(file)?;
     
     let mut removed = 0;
@@ -23,7 +23,7 @@ pub fn part1(file: &str) -> Result<usize, std::io::Error> {
     
     let mut accessible: Vec<(usize, usize)> = Vec::new();
     
-    while tries == 0 || (tries <20 && accessible.len() > 0) {
+    while tries == 0 || accessible.len() > 0 {
         
         accessible.clear();
 
