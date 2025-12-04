@@ -26,6 +26,6 @@ fn main() {
 
 
     // Day 04
-    let answer = aoc_2025_04::part1("input/2025_04a.txt");
+    let answer = aoc_2025_04::part1("input/2025_04b.txt");
     println!("Answer {}", answer.unwrap());
 }
