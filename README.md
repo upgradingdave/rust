@@ -6,6 +6,7 @@ This is a repo I'm using to learn Rust
 - https://rustlings.rust-lang.org/
 - https://rust-lang.github.io/api-guidelines/
 - https://doc.rust-lang.org/reference/index.html
+- https://doc.rust-lang.org/rustc/index.html
 
 # Installation
 
