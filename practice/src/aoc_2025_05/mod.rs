@@ -27,20 +27,27 @@ pub fn part1(path_to_file: &str) -> Result<u64, io::Error> {
             let mut overlap_found = false;
             let mut new_start = 0;
             let mut new_end = 0;
-            let mut old_start = 0;
+            let mut overlaps: Vec<u64> = Vec::new();
             for (k, v) in ranges.iter() {
                 if start >= *k && start <= *v || end >= *k && end <= *v || start <= *k && end >= *v || start >= *k && end <= *v {
                     overlap_found = true;
-                    old_start = *k;
-                    new_start = start.min(*k);
-                    new_end = end.max(*v);
-                    break;
+                    println!("Overlap found {} - {}", k, v);
+                    if new_start > start.min(*k) || new_start == 0 {
+                        new_start = start.min(*k);
+                    }
+                    if new_end < end.max(*v) || new_end == 0 {
+                        new_end = end.max(*v);
+                    }
+                    
+                    overlaps.push(*k);
                 }
             }
             if overlap_found {
-                ranges.remove(&old_start);
+                for overlap in overlaps {
+                    ranges.remove(&overlap);
+                }
                 ranges.insert(new_start, new_end);
-                println!("Overlap found {} - {}", new_start, new_end);
+                println!("Merged {} - {}", new_start, new_end);
             } else {
                 ranges.insert(start, end);
                 println!("New range {} - {}", start, end);
@@ -52,7 +59,7 @@ pub fn part1(path_to_file: &str) -> Result<u64, io::Error> {
                 if ingredient_id >= *k && ingredient_id <= *v {
                     println!("Ingredient {} is in range {} - {}", ingredient_id, k, v);
                     answer += 1;
-                    break;
+                    //break;
                 }
             }
         }
