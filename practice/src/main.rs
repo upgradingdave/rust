@@ -30,7 +30,7 @@ fn main() {
     //println!("Answer {}", answer.unwrap());
 
     // Day 05
-    let answer = aoc_2025_05::part1("input/2025_05b.txt");
-    println!("Answer {}", answer.unwrap());
+    let (part1, part2) = aoc_2025_05::solution("input/2025_05b.txt").unwrap();
+    println!("Part 1 {}, Part 2 {}", part1, part2);
     // Part 1 Answer 615
 }

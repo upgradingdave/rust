@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
-pub fn part1(path_to_file: &str) -> Result<u64, io::Error> {
+pub fn solution(path_to_file: &str) -> Result<(u64, u64), io::Error> {
     let file = File::open(path_to_file)?;
     let reader = BufReader::new(file);
 
@@ -10,7 +10,7 @@ pub fn part1(path_to_file: &str) -> Result<u64, io::Error> {
     
     let mut ranges: HashMap<u64,u64> = HashMap::new();
     
-    let mut answer = 0;
+    let mut part1 = 0;
     
     for line in reader.lines() {
         let line = line?;
@@ -31,7 +31,7 @@ pub fn part1(path_to_file: &str) -> Result<u64, io::Error> {
             for (k, v) in ranges.iter() {
                 if start >= *k && start <= *v || end >= *k && end <= *v || start <= *k && end >= *v || start >= *k && end <= *v {
                     overlap_found = true;
-                    println!("Overlap found {} - {}", k, v);
+                    //println!("Overlap found {} - {}", k, v);
                     if new_start > start.min(*k) || new_start == 0 {
                         new_start = start.min(*k);
                     }
@@ -47,24 +47,29 @@ pub fn part1(path_to_file: &str) -> Result<u64, io::Error> {
                     ranges.remove(&overlap);
                 }
                 ranges.insert(new_start, new_end);
-                println!("Merged {} - {}", new_start, new_end);
+                //println!("Merged {} - {}", new_start, new_end);
             } else {
                 ranges.insert(start, end);
-                println!("New range {} - {}", start, end);
+                //println!("New range {} - {}", start, end);
             }
         } else {
             let ingredient_id = line.parse::<u64>().unwrap();
-            println!("ingredient: {}", ingredient_id);
+            //println!("ingredient: {}", ingredient_id);
             for (k, v) in ranges.iter() {
                 if ingredient_id >= *k && ingredient_id <= *v {
-                    println!("Ingredient {} is in range {} - {}", ingredient_id, k, v);
-                    answer += 1;
+                    //println!("Ingredient {} is in range {} - {}", ingredient_id, k, v);
+                    part1 += 1;
                     //break;
                 }
             }
         }
-
+        
     }
     
-    return Ok(answer);
+    let mut part2 = 0;
+    for (k, v) in ranges.iter() {
+        part2 += v - k + 1;
+    }
+    
+    return Ok((part1, part2));
 }
