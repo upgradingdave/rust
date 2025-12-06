@@ -34,6 +34,6 @@ fn main() {
     //println!("Part 1 {}", part1);
 
     // Day 06
-    let part1 = aoc_2025_06::part1("input/2025_06a.txt").unwrap();
+    let part1 = aoc_2025_06::part1("input/2025_06b.txt").unwrap();
     println!("Part 1 {}", part1);
 }
