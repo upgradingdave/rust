@@ -2,6 +2,7 @@
 //use practice::aoc_2025_02;
 //use practice::aoc_2025_03;
 //use practice::aoc_2025_05;
+use practice::aoc_2025_06;
 
 fn main() {
     // Day 01
@@ -31,4 +32,8 @@ fn main() {
     // Day 05
     //let part1 = aoc_2025_05::part1("input/2025_05b.txt").unwrap();
     //println!("Part 1 {}", part1);
+
+    // Day 06
+    let part1 = aoc_2025_06::part1("input/2025_06a.txt").unwrap();
+    println!("Part 1 {}", part1);
 }
