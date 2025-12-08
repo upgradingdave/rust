@@ -1,21 +1,21 @@
 use ordered_float::NotNan;
-use std::io::{self, BufRead};
+use std::io::{BufRead};
 use std::collections::{BTreeMap, HashMap, HashSet};
 
 #[derive(PartialEq, Eq, Hash, Clone, Copy, Debug)]
 struct Point3D {
-    x: i32,
-    y: i32,
-    z: i32,
+    x: u64,
+    y: u64,
+    z: u64,
 }
 
 impl Point3D {
-    fn new(x: i32, y: i32, z: i32) -> Self {
+    fn new(x: u64, y: u64, z: u64) -> Self {
         Point3D { x, y, z }
     }
     
     fn distance(&self, other: &Point3D) -> f64 {
-        let result = ((self.x - other.x).pow(2) + (self.y - other.y).pow(2) + (self.z - other.z).pow(2)) as f64;
+        let result = ((self.x.max(other.x) - other.x.min(self.x)).pow(2) + (self.y.max(other.y) - other.y.min(self.y)).pow(2) + (self.z.max(other.z) - other.z.min(self.z)).pow(2)) as f64;
         result.sqrt()
     }
 }
@@ -44,8 +44,8 @@ pub fn solution(file_path: &str, total_distances: usize) -> (u64, u64) {
     let mut circuits:Vec<HashSet<&Point3D>> = Vec::new();
     let mut circuits_by_point: HashMap<&Point3D, u64> = HashMap::new();
 
-    let mut count = 0;
-    while count < total_distances {
+    //let mut count = 0;
+    for count in 0..distances.len(){
         
         let pairs = distances.values().nth(count).unwrap();
         
@@ -71,7 +71,7 @@ pub fn solution(file_path: &str, total_distances: usize) -> (u64, u64) {
             circuits_by_point.insert(point2, circuit_id);
             println!("Circuit ID: {} now contains {} points", circuit_id, circuit.len());
         }
-        count += pairs.len();
+        //count += pairs.len();
     }
         
     // order the circuits by size

@@ -47,6 +47,6 @@ fn main() {
     // println!("Part 2 {}", part2);
 
     // Day 08
-    let (part1, part2) = aoc_2025_08::solution("input/2025_08a.txt", 10);
+    let (part1, _) = aoc_2025_08::solution("input/2025_08b.txt", 1000);
     println!("Part 1 {}", part1);
 }
