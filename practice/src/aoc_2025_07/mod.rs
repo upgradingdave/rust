@@ -1,18 +1,19 @@
 use std::fs::File;
 use std::io::{self, BufRead, BufReader};
 
-pub fn part1(input: &str) -> io::Result<u64> {
+pub fn solution(input: &str) -> io::Result<(u64, u64)> {
     let file = File::open(input)?;
     let reader = BufReader::new(file);
 
     let mut splits = 0;
-    let mut tachyon_manifolds = reader.lines().collect::<io::Result<Vec<String>>>()?;
+    let mut lines = reader.lines().collect::<io::Result<Vec<String>>>()?;
+    let mut beam_locations = vec![0; lines[0].len()];
 
-    for l in 0..tachyon_manifolds.len() {
-        for i in 0..tachyon_manifolds[l].len() {
-            let char = tachyon_manifolds[l].chars().nth(i).unwrap();
+    for l in 0..lines.len() {
+        for i in 0..lines[l].len() {
+            let char = lines[l].chars().nth(i).unwrap();
             let above = if l > 0 {
-                tachyon_manifolds[l - 1].chars().nth(i)
+                lines[l - 1].chars().nth(i)
             } else {
                 None
             };
@@ -22,21 +23,29 @@ pub fn part1(input: &str) -> io::Result<u64> {
             println!("{:?}", char);
 
             if above == Some('S') {
-                tachyon_manifolds[l].replace_range(i..i + 1, "|");
+                lines[l].replace_range(i..i + 1, "|");
+                beam_locations[i] = 1;
             }
 
             if above == Some('|') {
                 if char == '^' {
                     println!("found split");
                     splits += 1;
-                    tachyon_manifolds[l].replace_range(i - 1..i, "|");
-                    tachyon_manifolds[l].replace_range(i + 1..i + 2, "|");
+                    lines[l].replace_range(i - 1..i, "|");
+                    beam_locations[i - 1] += beam_locations[i];
+                    lines[l].replace_range(i + 1..i + 2, "|");
+                    beam_locations[i + 1] += beam_locations[i];
+                    beam_locations[i] = 0;
                 } else {
-                    tachyon_manifolds[l].replace_range(i..i + 1, "|");
+                    lines[l].replace_range(i..i + 1, "|");
                 }
             }
         }
     }
 
-    Ok(splits)
+    // sum up the tachyon manifolds
+    let total = beam_locations.iter().sum();
+
+    Ok((splits, total))
 }
+
