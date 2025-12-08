@@ -67,7 +67,7 @@ pub fn part2(path_to_file: &str) -> Result<u64, io::Error> {
     
     let mut offset = 0;
     for meta in col_meta {
-        println!("meta: {}", meta);
+        //println!("meta: {}", meta);
         let col_len = meta.len();
         let mut s = String::new();
         let mut col:Vec<String> = Vec::new();
@@ -75,7 +75,7 @@ pub fn part2(path_to_file: &str) -> Result<u64, io::Error> {
             for i in 0..lines.len()-1 {
                 s += lines[i].chars().nth(j).unwrap().to_string().as_str();
             }        
-            println!("s: {}", s);
+            //println!("s: {}", s);
             col.push(s);
             s = String::new();
         }
@@ -88,7 +88,7 @@ pub fn part2(path_to_file: &str) -> Result<u64, io::Error> {
         }
     }
 
-    println!("answers: {:?}", answers);
+    //println!("answers: {:?}", answers);
     Ok(answers.iter().sum::<u64>())
 }
 
