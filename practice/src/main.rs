@@ -2,7 +2,8 @@
 //use practice::aoc_2025_02;
 //use practice::aoc_2025_03;
 //use practice::aoc_2025_05;
-use practice::aoc_2025_06;
+//use practice::aoc_2025_06;
+use practice::aoc_2025_07;
 
 fn main() {
     // Day 01
@@ -36,6 +37,10 @@ fn main() {
     // Day 06
     //let part1 = aoc_2025_06::part1("input/2025_06b.txt").unwrap();
     //println!("Part 1 {}", part1);
-    let part2 = aoc_2025_06::part2("input/2025_06b.txt").unwrap();
-    println!("Part 2 {}", part2);
+    //let part2 = aoc_2025_06::part2("input/2025_06b.txt").unwrap();
+    //println!("Part 2 {}", part2);
+
+    // Day 07
+    let part1 = aoc_2025_07::part1("input/2025_07a.txt").unwrap();
+    println!("Part 1 {}", part1);
 }
