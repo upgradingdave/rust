@@ -48,49 +48,48 @@ pub fn part2(path_to_file: &str) -> Result<u64, io::Error> {
     let file = File::open(path_to_file)?;
     let reader = BufReader::new(file);
     
-    let mut cols: HashMap<u64, Vec<String>> = HashMap::new();
-    let mut answers: Vec<u64> = Vec::new();
-    
-    for line in reader.lines() {
-        let line = line?;
-
-        let re = Regex::new(r"\s+").unwrap();
-        let parts: Vec<&str> = re.split(&line).filter(|s| !s.is_empty()).collect();
-
-        for (i, part) in parts.iter().enumerate() {
-            
-            let col = cols.entry(i as u64).or_insert_with(Vec::new);
-            
-            if let Ok(_) = part.parse::<u64>() {
-                //println!("Pushing {} to column {}", part, i);
-                col.push(part.to_string().chars().rev().collect::<String>());
-            } else {
-
-                let mut total:u64 = 0;
-                let binding = String::new();
-                let longest = col.iter().max_by_key(|s| s.len()).unwrap_or(&binding);
-                for l in 0..longest.len() {
-                    let chars = col.iter().map(|s| s.chars().nth(l).unwrap_or(' ')).collect::<Vec<char>>();
-                    let chars_str = chars.into_iter().collect::<String>().trim().to_string();
-                    if let Ok(num) = chars_str.parse::<u64>() {
-
-                        println!("Parsed {} from column {}", num, i);
-                        
-                        if part.starts_with("+") {
-                            total += num;
-                        } else if part.starts_with("*") {
-                            total *= num;
-                        }                        
-                    }
-                }
-                answers.push(total);
-            }
+    let lines = reader.lines().collect::<Result<Vec<String>, io::Error>>()?;
+    let mut col_meta: Vec<String> = Vec::new();
+    let mut part = String::new();
+    for (i, c) in lines[lines.len()-1].chars().enumerate() {
+        
+        let peek = lines[lines.len()-1].chars().nth(i+1);
+        if peek == Some('+') || peek == Some('*') {
+            col_meta.push(part);
+            part = String::new();
+        } else {
+            part.push(c);
         }
     }
+    col_meta.push(part);
     
-    // sum the answers
-    let answer = answers.iter().sum();
-    Ok(answer)
+    let mut answers: Vec<u64> = Vec::new();
+    
+    let mut offset = 0;
+    for meta in col_meta {
+        println!("meta: {}", meta);
+        let col_len = meta.len();
+        let mut s = String::new();
+        let mut col:Vec<String> = Vec::new();
+        for j in offset..col_len+offset {
+            for i in 0..lines.len()-1 {
+                s += lines[i].chars().nth(j).unwrap().to_string().as_str();
+            }        
+            println!("s: {}", s);
+            col.push(s);
+            s = String::new();
+        }
+        offset += col_len+1;
+
+        if meta.starts_with('+') {
+            answers.push(col.iter().map(|s| s.trim().parse::<u64>().unwrap_or(0)).sum::<u64>());            
+        } else if meta.starts_with('*') {
+            answers.push(col.iter().map(|s| s.trim().parse::<u64>().unwrap_or(0)).product::<u64>());            
+        }
+    }
+
+    println!("answers: {:?}", answers);
+    Ok(answers.iter().sum::<u64>())
 }
 
 #[cfg(test)]
