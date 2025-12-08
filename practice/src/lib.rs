@@ -7,3 +7,4 @@ pub mod aoc_2025_04;
 pub mod aoc_2025_05;
 pub mod aoc_2025_06;
 pub mod aoc_2025_07;
+pub mod aoc_2025_08;
