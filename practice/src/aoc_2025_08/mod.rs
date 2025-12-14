@@ -16,11 +16,12 @@ impl Point3D {
     
     fn distance(&self, other: &Point3D) -> f64 {
         let result = ((self.x.max(other.x) - other.x.min(self.x)).pow(2) + (self.y.max(other.y) - other.y.min(self.y)).pow(2) + (self.z.max(other.z) - other.z.min(self.z)).pow(2)) as f64;
-        result.sqrt()
+        //result.sqrt()
+        result
     }
 }
 
-pub fn solution(file_path: &str, total_distances: usize) -> (u64, u64) {
+pub fn solution(file_path: &str, total_distances: usize) -> u64 {
 
     let mut points = Vec::new();
     let file = std::fs::File::open(file_path).unwrap();
@@ -41,27 +42,65 @@ pub fn solution(file_path: &str, total_distances: usize) -> (u64, u64) {
          }
     }
     
-    let mut circuits:Vec<HashSet<&Point3D>> = Vec::new();
+    let mut circuits:HashMap<u64, HashSet<&Point3D>> = HashMap::new();
     let mut circuits_by_point: HashMap<&Point3D, u64> = HashMap::new();
 
-    //let mut count = 0;
+    let mut circuit_id = 0;
+    let mut processed = 0;
     for count in 0..distances.len(){
         
         let pairs = distances.values().nth(count).unwrap();
         
         for (point1, point2) in pairs {
             // is one of these points part of a circuit?
-            let circuit_id:u64 = if circuits_by_point.contains_key(point1) {
-                circuits_by_point.get(point1).unwrap().clone()
+            circuit_id = if circuits_by_point.contains_key(point1) {
+
+                let circuit_id1 = circuits_by_point.get(point1).unwrap().clone();
+                
+                if circuits_by_point.contains_key(point2) {
+                    let circuit_id2 = circuits_by_point.get(point2).unwrap().clone();
+                    
+                    if circuit_id1 != circuit_id2 {
+                        println!("Merging circuits!!");
+
+                        let mut circuit1 = circuits.get(&circuit_id1).unwrap().clone();
+                        let circuit2 = circuits.remove(&circuit_id2).unwrap();
+    
+                        println!("Circuit Id 1: {:?}", circuit_id1);
+                        println!("{:?}", circuit1);
+                        println!("Circuit Id 2: {:?}", circuit_id2);
+                        println!("{:?}", circuit2);
+                        
+                        for point in circuit2.iter() {
+                            circuit1.insert(point);
+                        }
+                        
+                        println!("MERGED {:?}", circuit1);
+    
+                        circuits.insert(circuit_id1, circuit1);
+                        
+                        // reindex the circuit IDs
+                        circuits_by_point = HashMap::new();
+                        for (i, circuit) in circuits.iter() {
+                            for point in circuit.iter() {
+                                //println!("Insert Point: {:?} to circuit {}", point, i);
+                                circuits_by_point.insert(point, *i);
+                            }
+                        }
+                    }
+                }
+                
+                circuit_id1
+                
             } else if circuits_by_point.contains_key(point2) {
                 circuits_by_point.get(point2).unwrap().clone()
-            } else {
-                circuits.push(HashSet::new());
-                (circuits.len()-1) as u64
+            } else {                
+                circuits.insert(circuit_id+1, HashSet::new());
+                circuit_id+1
             };
             
-            let circuit = circuits.get_mut(circuit_id as usize).unwrap();
-            println!("----{}----", count);
+            let circuit = circuits.get_mut(&circuit_id).unwrap();
+            println!("----{}----", processed);
             println!("Circuit ID: {}", circuit_id);
             println!("Point1: {:?}", point1);
             println!("Point2: {:?}", point2);
@@ -70,21 +109,21 @@ pub fn solution(file_path: &str, total_distances: usize) -> (u64, u64) {
             circuits_by_point.insert(point1, circuit_id);
             circuits_by_point.insert(point2, circuit_id);
             println!("Circuit ID: {} now contains {} points", circuit_id, circuit.len());
+            println!("{:?}", circuit);
+            processed += 1;
+            if processed > total_distances {
+                break;
+            }
         }
-        //count += pairs.len();
-    }
-        
-    // order the circuits by size
-    circuits.sort_by(|a, b| b.len().cmp(&a.len()));
-    let mut total = 1;
-    for (i, circuit) in circuits.iter().enumerate() {
-        if i<3 {
-            println!("Circuit ID: {} contains {} points", i, circuit.len());
-            total *= circuit.len();
-        } else {
+        if processed > total_distances {
             break;
         }
     }
+        
+    // order the circuits by size
+    let mut sorted_circuits: Vec<(u64, HashSet<&Point3D>)> = circuits.into_iter().collect();
+    sorted_circuits.sort_by(|a, b| b.1.len().cmp(&a.1.len()));
+    let total = sorted_circuits[0].1.len() * sorted_circuits[1].1.len() * sorted_circuits[2].1.len();
 
-    (total as u64, 0)
+    total as u64
 }
