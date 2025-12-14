@@ -7,6 +7,7 @@ This is a repo I'm using to learn Rust
 - https://rust-lang.github.io/api-guidelines/
 - https://doc.rust-lang.org/reference/index.html
 - https://doc.rust-lang.org/rustc/index.html
+- https://rustwasm.github.io/docs/book/introduction.html
 
 # Installation
 
