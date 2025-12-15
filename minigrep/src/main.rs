@@ -2,7 +2,7 @@ use std::env;
 use std::fs;
 use std::process;
 use std::error::Error;
-use minigrep::search;
+use minigrep::{ search, search_case_insensitive };
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -20,7 +20,13 @@ fn main() {
 fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.file_path)?;
 
-    for line in search(&config.query, &contents) {
+    let results = if config.case_sensitive {
+        search(&config.query, &contents)
+    } else {
+        search_case_insensitive(&config.query, &contents)
+    };
+    
+    for line in results {
         println!("{}", line);
     }
     
@@ -30,6 +36,7 @@ fn run(config: Config) -> Result<(), Box<dyn Error>> {
 struct Config {
     query: String,
     file_path: String,
+    case_sensitive: bool,
 }
 
 impl Config {
@@ -40,7 +47,9 @@ impl Config {
         
         let query = args[1].clone();
         let file_path = args[2].clone();
+        
+        let case_sensitive = env::var("CASE_SENSITIVE").is_ok();
 
-        Ok(Config { query, file_path })
+        Ok(Config { query, file_path, case_sensitive })
     }
 }
